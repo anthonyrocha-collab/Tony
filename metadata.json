@@ -1,0 +1,6 @@
+{
+  "name": "Portfólio Autoral",
+  "description": "Sistema completo e acessível de portfólio autoral com gestão de conteúdo, blocos de mídia, design system dinâmico e integração com Supabase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
