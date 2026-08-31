@@ -1,150 +1,152 @@
-export type BlockType = 'texto' | 'imagem' | 'video_youtube' | 'audio';
+@import "tailwindcss";
 
-export type ProjectStatus = 'rascunho' | 'publicado';
+@layer base {
+  :root {
+    --color-bg: #0b0d11;
+    --color-surface: #14171f;
+    --color-text-primary: #f3f4f6;
+    --color-text-secondary: #9ca3af;
+    --color-primary: #3b82f6;
+    --color-secondary: #6366f1;
+    --color-accent: #f59e0b;
+    --color-border: #232733;
+    --color-focus: #60a5fa;
+    --color-error: #ef4444;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --font-title: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-base-size: 16px;
+    --radius-main: 12px;
+    --radius-sm: 6px;
+    --border-width: 1px;
+    --shadow-level: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+    --max-container-width: 1200px;
+    --motion-duration: 0.25s;
+  }
 
-export interface SocialLink {
-  id?: string;
-  platform: 'github' | 'linkedin' | 'behance' | 'instagram' | 'twitter' | 'dribbble' | 'youtube' | 'email' | 'other';
-  label: string;
-  url: string;
+  html {
+    font-family: var(--font-body);
+    font-size: var(--font-base-size);
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+  }
+
+  /* Accessible Focus Ring */
+  *:focus-visible {
+    outline: 2px solid var(--color-focus) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Custom Typography Classes */
+  .font-title {
+    font-family: var(--font-title);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
 }
 
-export interface ThemeColors {
-  background: string;
-  surface: string;
-  textPrimary: string;
-  textSecondary: string;
-  primary: string;
-  secondary: string;
-  accent: string;
-  border: string;
-  focus: string;
-  success: string;
-  warning: string;
-  error: string;
+
+/* Admin-controlled visual autonomy */
+:root {
+  --grid-columns: 3;
+  --card-gap: 1.5rem;
+  --section-gap: 4rem;
+  --card-aspect-ratio: 16 / 10;
+  --title-weight: 700;
+  --body-line-height: 1.6;
+  --heading-letter-spacing: -0.02em;
+  --card-hover-distance: -4px;
+  --card-hover-scale: 1;
+  --image-hover-scale: 1.02;
+  --button-hover-distance: -4px;
+  --button-press-scale: 1;
+  --motion-easing: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-export interface ThemeTypography {
-  titleFont: string;
-  bodyFont: string;
-  baseFontSize: number;
-  scaleRatio: number;
+.font-title {
+  font-weight: var(--title-weight);
+  letter-spacing: var(--heading-letter-spacing);
 }
 
-export interface ThemeShape {
-  borderRadius: string;
-  borderWidth: string;
-  borderStyle: string;
-  shadowLevel: 'none' | 'small' | 'medium' | 'large';
+body {
+  line-height: var(--body-line-height);
 }
 
-export interface ThemeLayout {
-  maxContainerWidth: string;
-  gridColumns: number;
-  sectionGap: string;
-  cardGap: string;
+.admin-controlled-grid {
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  gap: var(--card-gap);
 }
 
-export interface ThemeMotion {
-  duration: string;
-  easing: string;
-  intensity: 'subtle' | 'moderate' | 'expressive' | 'none';
-  reducedMotionSupport: boolean;
+.admin-controlled-card {
+  transition:
+    transform var(--motion-duration) var(--motion-easing),
+    box-shadow var(--motion-duration) var(--motion-easing),
+    border-color var(--motion-duration) var(--motion-easing);
+}
+.admin-controlled-card:hover {
+  transform: translateY(var(--card-hover-distance)) scale(var(--card-hover-scale));
+}
+.admin-controlled-image {
+  aspect-ratio: var(--card-aspect-ratio);
+}
+.admin-controlled-image img {
+  transition: transform var(--motion-duration) var(--motion-easing);
+}
+.admin-controlled-image:hover img {
+  transform: scale(var(--image-hover-scale));
+}
+.admin-controlled-button {
+  transition: transform var(--motion-duration) var(--motion-easing), background-color var(--motion-duration) var(--motion-easing), border-color var(--motion-duration) var(--motion-easing);
+}
+.admin-controlled-button:hover {
+  transform: translateY(var(--button-hover-distance));
+}
+.admin-controlled-button:active {
+  transform: scale(var(--button-press-scale));
 }
 
-export interface ThemeUxWriting {
-  projectCtaLabel: string;
-  aboutNavLabel: string;
-  projectsNavLabel: string;
-  contactNavLabel: string;
-  filterAllLabel: string;
-  emptyProjectsMessage: string;
-  emptyCategoryMessage: string;
-  whatsappTemplate: string;
+@keyframes adminPortfolioEntrance {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+[data-entrance="fade"] .admin-controlled-card {
+  animation: adminPortfolioEntrance var(--motion-duration) var(--motion-easing) both;
+}
+[data-entrance="slide"] .admin-controlled-card {
+  animation: adminPortfolioEntrance calc(var(--motion-duration) * 1.4) var(--motion-easing) both;
 }
 
-export interface ThemeConfig {
-  colors: ThemeColors;
-  typography: ThemeTypography;
-  shape: ThemeShape;
-  layout: ThemeLayout;
-  motion: ThemeMotion;
-  uxWriting: ThemeUxWriting;
+@media (max-width: 767px) {
+  .admin-controlled-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reduced-motion="true"] *,
+  [data-reduced-motion="true"] *::before,
+  [data-reduced-motion="true"] *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-export interface PortfolioSettings {
-  id: string;
-  owner_id?: string;
-  portfolio_name: string;
-  tagline: string;
-  about_title: string;
-  about_text: string;
-  short_bio: string;
-  profile_image: string;
-  whatsapp: string;
-  email_public: string;
-  location: string;
-  social_links: SocialLink[];
-  ux_voice: string;
-  theme_config: ThemeConfig;
-  created_at?: string;
-  updated_at?: string;
+[data-card-hover="glow"] .admin-controlled-card:hover {
+  box-shadow: 0 0 0 1px var(--color-primary), 0 14px 40px rgba(0,0,0,.22);
 }
-
-export interface Category {
-  id: string;
-  owner_id?: string;
-  name: string;
-  slug: string;
-  description?: string;
-  display_order: number;
-  created_at?: string;
-  project_count?: number;
-}
-
-export interface Project {
-  id: string;
-  owner_id?: string;
-  category_id?: string | null;
-  category_name?: string;
-  title: string;
-  slug: string;
-  short_description: string;
-  cover_image: string;
-  year: number;
-  status: ProjectStatus;
-  featured: boolean;
-  display_order: number;
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface ProjectBlock {
-  id: string;
-  project_id: string;
-  type: BlockType;
-  content?: string;
-  media_url?: string;
-  alt_text?: string;
-  caption?: string;
-  transcript?: string;
-  display_order: number;
-  created_at?: string;
-}
-
-export interface ContrastCheckResult {
-  ratio: number;
-  formattedRatio: string;
-  normalTextPass: boolean; // >= 4.5:1
-  largeTextPass: boolean;  // >= 3.0:1
-  uiComponentPass: boolean; // >= 3.0:1
-  level: 'AAA' | 'AA' | 'AA Large' | 'Falha';
-  warningMessage?: string;
-}
-
-export interface ToastNotification {
-  id: string;
-  type: 'success' | 'error' | 'info' | 'warning';
-  title: string;
-  message?: string;
+[data-image-hover="pan"] .admin-controlled-image:hover img {
+  transform: scale(1.02) translateX(4px);
 }
