@@ -158,20 +158,20 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onSelectProject }) =
       ) : (
         <section
           aria-label="Lista de Projetos"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+          className="admin-controlled-grid grid"
         >
           {filteredProjects.map((project) => (
             <article
               key={project.id}
-              className="group flex flex-col rounded-[var(--radius-main)] bg-[var(--color-surface)] border border-[var(--color-border)] overflow-hidden shadow-md hover:border-[var(--color-primary)] hover:shadow-xl transition-all duration-300"
+              className="group admin-controlled-card flex flex-col rounded-[var(--radius-main)] bg-[var(--color-surface)] border border-[var(--color-border)] overflow-hidden shadow-[var(--box-shadow)] hover:border-[var(--color-primary)] hover:shadow-xl"
             >
               {/* Imagem de Capa */}
-              <div className="relative aspect-16/10 overflow-hidden bg-black/20">
+              <div className="admin-controlled-image relative overflow-hidden bg-black/20">
                 {project.cover_image ? (
                   <img
                     src={project.cover_image}
                     alt={`Capa do projeto: ${project.title}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover"
                     loading="lazy"
                     referrerPolicy="no-referrer"
                   />
@@ -216,7 +216,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onSelectProject }) =
                     type="button"
                     onClick={() => onSelectProject(project.slug)}
                     aria-label={`Abrir detalhes do projeto: ${project.title}`}
-                    className="w-full inline-flex items-center justify-between px-4 py-2.5 rounded-[var(--radius-sm)] text-xs sm:text-sm font-semibold bg-[var(--color-bg)] hover:bg-[var(--color-primary)] text-[var(--color-text-primary)] hover:text-white border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all min-h-[44px] cursor-pointer focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:outline-none"
+                    className="admin-controlled-button w-full inline-flex items-center justify-between px-4 py-2.5 rounded-[var(--radius-sm)] text-xs sm:text-sm font-semibold bg-[var(--color-bg)] hover:bg-[var(--color-primary)] text-[var(--color-text-primary)] hover:text-white border border-[var(--color-border)] hover:border-[var(--color-primary)] min-h-[44px] cursor-pointer focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:outline-none"
                   >
                     <span>{projectCta}</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
