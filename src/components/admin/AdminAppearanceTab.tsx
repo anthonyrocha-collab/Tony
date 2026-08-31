@@ -367,6 +367,25 @@ export const AdminAppearanceTab: React.FC = () => {
               <option value="1.414">1.414 — Augmented Fourth (Expressivo)</option>
             </select>
           </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="admin-title-weight" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Peso dos Títulos ({theme.typography.titleWeight || 700})</label>
+            <select id="admin-title-weight" value={theme.typography.titleWeight || 700} onChange={(e) => handleTypographyChange('titleWeight', parseInt(e.target.value))} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
+              <option value="400">400 — Regular</option><option value="500">500 — Medium</option><option value="600">600 — Semibold</option><option value="700">700 — Bold</option><option value="800">800 — Extra Bold</option><option value="900">900 — Black</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="admin-line-height" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Altura de Linha ({theme.typography.bodyLineHeight || 1.6})</label>
+            <select id="admin-line-height" value={theme.typography.bodyLineHeight || 1.6} onChange={(e) => handleTypographyChange('bodyLineHeight', parseFloat(e.target.value))} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
+              <option value="1.3">1.3 — Compacta</option><option value="1.5">1.5 — Legível</option><option value="1.6">1.6 — Equilibrada</option><option value="1.8">1.8 — Editorial</option><option value="2">2.0 — Muito aberta</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="admin-letter-spacing" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Tracking dos Headings</label>
+            <select id="admin-letter-spacing" value={theme.typography.headingLetterSpacing || '-0.02em'} onChange={(e) => handleTypographyChange('headingLetterSpacing', e.target.value)} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
+              <option value="-0.04em">-0.04em — Apertado</option><option value="-0.02em">-0.02em — Sutil</option><option value="0em">0em — Neutro</option><option value="0.02em">0.02em — Aberto</option><option value="0.05em">0.05em — Expressivo</option>
+            </select>
+          </div>
         </div>
       </section>
 
@@ -456,6 +475,25 @@ export const AdminAppearanceTab: React.FC = () => {
               <option value="100%">100% (Fluido Total)</option>
             </select>
           </div>
+          <div className="space-y-1.5">
+            <label htmlFor="admin-grid-columns" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Colunas do Grid ({theme.layout.gridColumns})</label>
+            <select id="admin-grid-columns" value={theme.layout.gridColumns} onChange={(e) => handleLayoutChange('gridColumns', parseInt(e.target.value))} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
+              <option value="1">1 coluna — Editorial</option><option value="2">2 colunas — Equilibrado</option><option value="3">3 colunas — Portfólio</option><option value="4">4 colunas — Galeria</option><option value="5">5 colunas — Arquivo Visual</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="admin-card-gap" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Espaçamento entre Cards ({theme.layout.cardGap})</label>
+            <select id="admin-card-gap" value={theme.layout.cardGap} onChange={(e) => handleLayoutChange('cardGap', e.target.value)} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
+              <option value="0.75rem">0.75rem — Compacto</option><option value="1rem">1rem — Próximo</option><option value="1.5rem">1.5rem — Padrão</option><option value="2rem">2rem — Respirado</option><option value="3rem">3rem — Editorial</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="admin-card-ratio" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Proporção das Imagens</label>
+            <select id="admin-card-ratio" value={theme.layout.cardAspectRatio || '16 / 10'} onChange={(e) => handleLayoutChange('cardAspectRatio', e.target.value)} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
+              <option value="1 / 1">1:1 — Quadrada</option><option value="4 / 3">4:3 — Clássica</option><option value="16 / 10">16:10 — Padrão</option><option value="16 / 9">16:9 — Cinemática</option><option value="3 / 2">3:2 — Fotográfica</option><option value="21 / 9">21:9 — Ultra-wide</option>
+            </select>
+          </div>
+
 
           <div className="space-y-1.5">
             <label htmlFor="admin-motion-dur" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">
@@ -470,6 +508,31 @@ export const AdminAppearanceTab: React.FC = () => {
               <option value="0.15s">0.15s (Rápido / Snappy)</option>
               <option value="0.3s">0.3s (Equilibrado)</option>
               <option value="0.5s">0.5s (Suave & Dramático)</option>
+            </select>
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="admin-card-hover" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Hover dos Cards</label>
+            <select id="admin-card-hover" value={theme.motion.cardHover || 'lift'} onChange={(e) => handleMotionChange('cardHover', e.target.value)} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
+              <option value="lift">Elevar</option><option value="scale">Ampliar</option><option value="glow">Glow / foco</option><option value="none">Nenhum</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="admin-image-hover" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Hover das Imagens</label>
+            <select id="admin-image-hover" value={theme.motion.imageHover || 'zoom'} onChange={(e) => handleMotionChange('imageHover', e.target.value)} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
+              <option value="zoom">Zoom</option><option value="pan">Pan suave</option><option value="none">Nenhum</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="admin-button-hover" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Microinteração dos Botões</label>
+            <select id="admin-button-hover" value={theme.motion.buttonHover || 'lift'} onChange={(e) => handleMotionChange('buttonHover', e.target.value)} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
+              <option value="lift">Elevar</option><option value="press">Press / toque</option><option value="none">Nenhum</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="admin-entrance" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Entrada dos Cards</label>
+            <select id="admin-entrance" value={theme.motion.entrance || 'fade'} onChange={(e) => handleMotionChange('entrance', e.target.value)} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
+              <option value="fade">Fade + subida</option><option value="slide">Slide</option><option value="none">Nenhuma</option>
             </select>
           </div>
         </div>
