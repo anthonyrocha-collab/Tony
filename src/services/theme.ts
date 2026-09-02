@@ -5,6 +5,19 @@ import { DEFAULT_THEME } from '../utils/defaults';
  * Aplica os tokens do Design System no elemento raiz (document.documentElement)
  * através de CSS Custom Properties nativas.
  */
+function ensureGoogleFont(fontFamily: string): void {
+  const known = ['Plus Jakarta Sans', 'Inter', 'Playfair Display', 'Syne', 'Courier Prime'];
+  const family = fontFamily.split(',')[0].trim().replace(/^['"]|['"]$/g, '');
+  if (!known.includes(family)) return;
+  const id = `theme-font-${family.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  if (document.getElementById(id)) return;
+  const link = document.createElement('link');
+  link.id = id;
+  link.rel = 'stylesheet';
+  link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family).replace(/%20/g, '+')}:wght@400;500;600;700;800;900&display=swap`;
+  document.head.appendChild(link);
+}
+
 export function applyThemeToDOM(theme: ThemeConfig | null | undefined): void {
   const root = document.documentElement;
   const activeTheme = theme || DEFAULT_THEME;
@@ -26,10 +39,17 @@ export function applyThemeToDOM(theme: ThemeConfig | null | undefined): void {
   root.style.setProperty('--color-error', colors.error || DEFAULT_THEME.colors.error);
 
   // 2. Tipografia
-  root.style.setProperty('--font-title', typography.titleFont || DEFAULT_THEME.typography.titleFont);
-  root.style.setProperty('--font-body', typography.bodyFont || DEFAULT_THEME.typography.bodyFont);
+  const titleFont = typography.titleFont || DEFAULT_THEME.typography.titleFont;
+  const bodyFont = typography.bodyFont || DEFAULT_THEME.typography.bodyFont;
+  root.style.setProperty('--font-title', titleFont);
+  root.style.setProperty('--font-body', bodyFont);
+  ensureGoogleFont(titleFont);
+  ensureGoogleFont(bodyFont);
   root.style.setProperty('--font-base-size', `${typography.baseFontSize || 16}px`);
   root.style.setProperty('--type-scale', `${typography.scaleRatio || 1.25}`);
+  root.style.setProperty('--title-weight', `${typography.titleWeight || 700}`);
+  root.style.setProperty('--body-line-height', `${typography.bodyLineHeight || 1.6}`);
+  root.style.setProperty('--heading-letter-spacing', typography.headingLetterSpacing || '-0.02em');
 
   // 3. Forma & Bordas
   const radius = shape.borderRadius || '12px';
@@ -53,11 +73,26 @@ export function applyThemeToDOM(theme: ThemeConfig | null | undefined): void {
 
   // 4. Layout
   root.style.setProperty('--container-max-w', layout.maxContainerWidth || '1200px');
+  root.style.setProperty('--max-container-width', layout.maxContainerWidth || '1200px');
   root.style.setProperty('--section-gap', layout.sectionGap || '4rem');
   root.style.setProperty('--card-gap', layout.cardGap || '1.5rem');
   root.style.setProperty('--grid-columns', `${layout.gridColumns || 3}`);
+  root.style.setProperty('--card-aspect-ratio', layout.cardAspectRatio || '16 / 10');
 
   // 5. Movimento & Microinterações
   root.style.setProperty('--motion-duration', motion.duration || '0.3s');
   root.style.setProperty('--motion-easing', motion.easing || 'cubic-bezier(0.16, 1, 0.3, 1)');
+  const intensity = motion.intensity || 'moderate';
+  const hoverDistance = intensity === 'expressive' ? '-8px' : intensity === 'subtle' ? '-2px' : intensity === 'none' ? '0px' : '-4px';
+  const hoverScale = intensity === 'expressive' ? '1.035' : intensity === 'subtle' ? '1.01' : intensity === 'none' ? '1' : '1.02';
+  root.style.setProperty('--card-hover-distance', motion.cardHover === 'lift' ? hoverDistance : '0px');
+  root.style.setProperty('--card-hover-scale', motion.cardHover === 'scale' ? hoverScale : '1');
+  root.style.setProperty('--image-hover-scale', motion.imageHover === 'zoom' ? hoverScale : '1');
+  root.style.setProperty('--button-hover-distance', motion.buttonHover === 'lift' ? hoverDistance : '0px');
+  root.style.setProperty('--button-press-scale', motion.buttonHover === 'press' ? '0.97' : '1');
+  root.dataset.cardHover = motion.cardHover || 'lift';
+  root.dataset.imageHover = motion.imageHover || 'zoom';
+  root.dataset.buttonHover = motion.buttonHover || 'lift';
+  root.dataset.entrance = motion.entrance || 'fade';
+  root.dataset.reducedMotion = motion.reducedMotionSupport ? 'true' : 'false';
 }
