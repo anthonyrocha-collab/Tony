@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { usePortfolio } from '../../contexts/PortfolioContext';
 import { ThemeConfig } from '../../types';
-import { DEFAULT_THEME, THEME_PRESETS } from '../../utils/defaults';
+import { DEFAULT_THEME, THEME_PRESETS, TYPOGRAPHY_PRESETS, GRID_PRESETS } from '../../utils/defaults';
 import { checkContrast } from '../../utils/contrast';
 import { applyThemeToDOM } from '../../services/theme';
 
@@ -308,13 +308,18 @@ export const AdminAppearanceTab: React.FC = () => {
               onChange={(e) => handleTypographyChange('titleFont', e.target.value)}
               className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]"
             >
-              <option value="Plus Jakarta Sans, system-ui, sans-serif">Plus Jakarta Sans (Moderno)</option>
-              <option value="Inter, system-ui, sans-serif">Inter (Neutro & Funcional)</option>
-              <option value="Playfair Display, Georgia, serif">Playfair Display (Editorial Clássico)</option>
-              <option value="Syne, sans-serif">Syne (Artístico & Brutalista)</option>
-              <option value="Courier Prime, monospace">Courier Prime (Monospace Autoral)</option>
-              <option value="system-ui, -apple-system, sans-serif">System UI (Nativo do Sistema)</option>
+              {TYPOGRAPHY_PRESETS.map((preset) => (
+                <option key={preset.id} value={preset.titleFont}>{preset.name}</option>
+              ))}
+              <option value="system-ui, -apple-system, sans-serif">System UI</option>
             </select>
+            <input
+              aria-label="Fonte personalizada dos títulos"
+              value={theme.typography.titleFont}
+              onChange={(e) => handleTypographyChange('titleFont', e.target.value)}
+              placeholder="Ou digite sua fonte: Nome da Fonte, sans-serif"
+              className="w-full px-4 py-2 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-xs text-[var(--color-text-primary)]"
+            />
           </div>
 
           <div className="space-y-1.5">
@@ -327,11 +332,18 @@ export const AdminAppearanceTab: React.FC = () => {
               onChange={(e) => handleTypographyChange('bodyFont', e.target.value)}
               className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]"
             >
-              <option value="Inter, system-ui, sans-serif">Inter (Alta Legibilidade)</option>
-              <option value="Plus Jakarta Sans, system-ui, sans-serif">Plus Jakarta Sans</option>
-              <option value="system-ui, -apple-system, sans-serif">System UI</option>
-              <option value="Georgia, serif">Georgia (Serifado Confortável)</option>
+              {TYPOGRAPHY_PRESETS.map((preset) => (
+                <option key={preset.id} value={preset.bodyFont}>{preset.name}</option>
+              ))}
+              <option value="Georgia, serif">Georgia</option>
             </select>
+            <input
+              aria-label="Fonte personalizada do corpo"
+              value={theme.typography.bodyFont}
+              onChange={(e) => handleTypographyChange('bodyFont', e.target.value)}
+              placeholder="Ou digite sua fonte: Nome da Fonte, sans-serif"
+              className="w-full px-4 py-2 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-xs text-[var(--color-text-primary)]"
+            />
           </div>
 
           <div className="space-y-1.5">
@@ -478,8 +490,18 @@ export const AdminAppearanceTab: React.FC = () => {
           <div className="space-y-1.5">
             <label htmlFor="admin-grid-columns" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Colunas do Grid ({theme.layout.gridColumns})</label>
             <select id="admin-grid-columns" value={theme.layout.gridColumns} onChange={(e) => handleLayoutChange('gridColumns', parseInt(e.target.value))} className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]">
-              <option value="1">1 coluna — Editorial</option><option value="2">2 colunas — Equilibrado</option><option value="3">3 colunas — Portfólio</option><option value="4">4 colunas — Galeria</option><option value="5">5 colunas — Arquivo Visual</option>
+              {GRID_PRESETS.map((preset) => (
+                <option key={preset.id} value={preset.columns}>{preset.name} — {preset.columns} coluna{preset.columns > 1 ? 's' : ''}</option>
+              ))}
             </select>
+            <input
+              type="number" min="1" max="12" step="1"
+              aria-label="Número personalizado de colunas"
+              value={theme.layout.gridColumns}
+              onChange={(e) => handleLayoutChange('gridColumns', Math.min(12, Math.max(1, parseInt(e.target.value) || 1)))}
+              className="w-full px-4 py-2 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-xs text-[var(--color-text-primary)]"
+            />
+            <p className="text-[11px] text-[var(--color-text-secondary)]">Você pode adicionar novos presets em <code>src/utils/defaults.ts</code> ou usar qualquer valor personalizado de 1 a 12 colunas.</p>
           </div>
           <div className="space-y-1.5">
             <label htmlFor="admin-card-gap" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Espaçamento entre Cards ({theme.layout.cardGap})</label>
