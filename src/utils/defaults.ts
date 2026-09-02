@@ -20,6 +20,9 @@ export const DEFAULT_THEME: ThemeConfig = {
     bodyFont: 'Inter, system-ui, -apple-system, sans-serif',
     baseFontSize: 16,
     scaleRatio: 1.25,
+    titleWeight: 700,
+    bodyLineHeight: 1.6,
+    headingLetterSpacing: '-0.02em',
   },
   shape: {
     borderRadius: '12px',
@@ -30,14 +33,20 @@ export const DEFAULT_THEME: ThemeConfig = {
   layout: {
     maxContainerWidth: '1200px',
     gridColumns: 3,
+    mobileGridColumns: 1,
     sectionGap: '4rem',
     cardGap: '1.5rem',
+    cardAspectRatio: '16 / 10',
   },
   motion: {
     duration: '0.3s',
     easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
     intensity: 'moderate',
     reducedMotionSupport: true,
+    cardHover: 'lift',
+    imageHover: 'zoom',
+    buttonHover: 'lift',
+    entrance: 'fade',
   },
   uxWriting: {
     projectCtaLabel: 'Ver projeto',
