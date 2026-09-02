@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Palette,
   Type,
@@ -18,11 +18,49 @@ import { DEFAULT_THEME, THEME_PRESETS, TYPOGRAPHY_PRESETS, GRID_PRESETS } from '
 import { PORTFOLIO_ICON_OPTIONS } from '../../utils/icons';
 import { checkContrast } from '../../utils/contrast';
 import { applyThemeToDOM } from '../../services/theme';
+import { getGoogleFonts, GoogleFontOption } from '../../services/googleFonts';
 
 export const AdminAppearanceTab: React.FC = () => {
   const { settings, updateTheme, showToast } = usePortfolio();
   const [theme, setTheme] = useState<ThemeConfig>(settings.theme_config || DEFAULT_THEME);
   const [isSaving, setIsSaving] = useState(false);
+  const [googleFonts, setGoogleFonts] = useState<GoogleFontOption[]>([]);
+  const [isLoadingFonts, setIsLoadingFonts] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    getGoogleFonts().then((fonts) => {
+      if (isMounted) {
+        setGoogleFonts(fonts);
+        setIsLoadingFonts(false);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const fontOptions = googleFonts.length > 0
+    ? googleFonts
+    : TYPOGRAPHY_PRESETS.flatMap((preset) => [preset.titleFont, preset.bodyFont])
+        .map((font) => ({ family: font.split(',')[0].trim() }))
+        .filter((font, index, fonts) => fonts.findIndex((item) => item.family === font.family) === index);
+
+  const currentTitleFamily = theme.typography.titleFont.split(',')[0].trim().replace(/^['"]|['"]$/g, '');
+  const currentBodyFamily = theme.typography.bodyFont.split(',')[0].trim().replace(/^['"]|['"]$/g, '');
+
+  const renderFontOptions = (currentFamily: string) => (
+    <>
+      {currentFamily && !fontOptions.some((font) => font.family === currentFamily) && (
+        <option value={`${currentFamily}, sans-serif`}>{currentFamily} (atual)</option>
+      )}
+      {fontOptions.map((font) => (
+        <option key={font.family} value={`${font.family}, ${font.category?.toLowerCase() === 'serif' ? 'Georgia, serif' : font.category?.toLowerCase() === 'monospace' ? 'monospace' : 'system-ui, sans-serif'}`}>
+          {font.family}
+        </option>
+      ))}
+    </>
+  );
 
   // Cálculos de Contraste WCAG 2.2 AA em tempo real
   const bgTextContrast = checkContrast(theme.colors.textPrimary, theme.colors.background);
@@ -309,9 +347,7 @@ export const AdminAppearanceTab: React.FC = () => {
               onChange={(e) => handleTypographyChange('titleFont', e.target.value)}
               className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]"
             >
-              {TYPOGRAPHY_PRESETS.map((preset) => (
-                <option key={preset.id} value={preset.titleFont}>{preset.name}</option>
-              ))}
+              {renderFontOptions(currentTitleFamily)}
               <option value="system-ui, -apple-system, sans-serif">System UI</option>
             </select>
             <input
@@ -333,9 +369,7 @@ export const AdminAppearanceTab: React.FC = () => {
               onChange={(e) => handleTypographyChange('bodyFont', e.target.value)}
               className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]"
             >
-              {TYPOGRAPHY_PRESETS.map((preset) => (
-                <option key={preset.id} value={preset.bodyFont}>{preset.name}</option>
-              ))}
+              {renderFontOptions(currentBodyFamily)}
               <option value="Georgia, serif">Georgia</option>
             </select>
             <input
