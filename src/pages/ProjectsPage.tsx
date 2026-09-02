@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Filter, ArrowRight, Layers, Search, Sparkles } from 'lucide-react';
+import { PortfolioIcon } from '../utils/icons';
 import { usePortfolio } from '../contexts/PortfolioContext';
 import { EmptyState } from '../components/common/EmptyState';
 
@@ -70,7 +71,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onSelectProject }) =
                   : 'bg-[var(--color-surface)] text-[var(--color-text-secondary)] border-[var(--color-border)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-primary)]/50'
               }`}
             >
-              <Layers className="w-4 h-4" aria-hidden="true" />
+              <PortfolioIcon name={settings.theme_config?.icons?.category || 'Layers'} className="w-4 h-4" />
               <span>{filterAllLabel}</span>
               <span
                 className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${
@@ -136,7 +137,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onSelectProject }) =
       {/* Grid de Projetos */}
       {filteredProjects.length === 0 ? (
         <EmptyState
-          icon={<Filter className="w-8 h-8 text-[var(--color-text-secondary)]" />}
+          icon={<PortfolioIcon name={settings.theme_config?.icons?.filter || 'Filter'} className="w-8 h-8 text-[var(--color-text-secondary)]" />}
           title="Nenhum projeto encontrado"
           description={
             searchQuery
@@ -177,7 +178,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onSelectProject }) =
                   />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center text-xs text-[var(--color-text-secondary)]">
-                    <Sparkles className="w-6 h-6 mb-1 text-[var(--color-primary)] opacity-40" />
+                    <PortfolioIcon name={settings.theme_config?.icons?.projectFallback || 'Sparkles'} className="w-6 h-6 mb-1 text-[var(--color-primary)] opacity-40" />
                     <span>{project.title}</span>
                   </div>
                 )}
