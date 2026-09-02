@@ -6,9 +6,8 @@ import { DEFAULT_THEME } from '../utils/defaults';
  * através de CSS Custom Properties nativas.
  */
 function ensureGoogleFont(fontFamily: string): void {
-  const known = ['Plus Jakarta Sans', 'Inter', 'Playfair Display', 'Syne', 'Courier Prime'];
   const family = fontFamily.split(',')[0].trim().replace(/^['"]|['"]$/g, '');
-  if (!known.includes(family)) return;
+  if (!family || /[^\w\s.'-]/u.test(family)) return;
   const id = `theme-font-${family.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   if (document.getElementById(id)) return;
   const link = document.createElement('link');
@@ -23,6 +22,7 @@ export function applyThemeToDOM(theme: ThemeConfig | null | undefined): void {
   const activeTheme = theme || DEFAULT_THEME;
 
   const { colors, typography, shape, layout, motion } = activeTheme;
+  const icons = activeTheme.icons;
 
   // 1. Cores
   root.style.setProperty('--color-bg', colors.background || DEFAULT_THEME.colors.background);
@@ -79,7 +79,11 @@ export function applyThemeToDOM(theme: ThemeConfig | null | undefined): void {
   root.style.setProperty('--grid-columns', `${layout.gridColumns || 3}`);
   root.style.setProperty('--card-aspect-ratio', layout.cardAspectRatio || '16 / 10');
 
-  // 5. Movimento & Microinterações
+  // 5. Ícones configuráveis
+  root.style.setProperty('--icon-size', `${icons?.size || 16}px`);
+  root.style.setProperty('--icon-stroke-width', `${icons?.strokeWidth || 2}`);
+
+  // 6. Movimento & Microinterações
   root.style.setProperty('--motion-duration', motion.duration || '0.3s');
   root.style.setProperty('--motion-easing', motion.easing || 'cubic-bezier(0.16, 1, 0.3, 1)');
   const intensity = motion.intensity || 'moderate';
