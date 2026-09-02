@@ -15,6 +15,7 @@ import {
 import { usePortfolio } from '../../contexts/PortfolioContext';
 import { ThemeConfig } from '../../types';
 import { DEFAULT_THEME, THEME_PRESETS, TYPOGRAPHY_PRESETS, GRID_PRESETS } from '../../utils/defaults';
+import { PORTFOLIO_ICON_OPTIONS } from '../../utils/icons';
 import { checkContrast } from '../../utils/contrast';
 import { applyThemeToDOM } from '../../services/theme';
 
@@ -560,11 +561,53 @@ export const AdminAppearanceTab: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. UX WRITING & TOM DE VOZ */}
+      {/* 5. ÍCONES AUTORAIS CONFIGURÁVEIS */}
+      <section className="p-6 sm:p-8 rounded-[var(--radius-main)] bg-[var(--color-surface)] border border-[var(--color-border)] space-y-6">
+        <h3 className="text-base font-bold font-title text-[var(--color-text-primary)] flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-[var(--color-primary)]" />
+          <span>5. Ícones & Sistema de Símbolos</span>
+        </h3>
+        <p className="text-xs text-[var(--color-text-secondary)]">Escolha os ícones usados em pontos-chave do portfólio. Para adicionar novos ícones, inclua o componente no registro em <code>src/utils/icons.tsx</code> e acrescente seu nome à lista de opções.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {([
+            ['filter', 'Ícone dos filtros'],
+            ['category', 'Ícone de categorias'],
+            ['projectFallback', 'Ícone quando o projeto não tem capa'],
+            ['projectCta', 'Ícone do botão do projeto'],
+          ] as const).map(([key, label]) => (
+            <div key={key} className="space-y-1.5">
+              <label htmlFor={`admin-icon-${key}`} className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">{label}</label>
+              <select
+                id={`admin-icon-${key}`}
+                value={theme.icons?.[key] || DEFAULT_THEME.icons![key]}
+                onChange={(e) => {
+                  const nextTheme: ThemeConfig = { ...theme, icons: { ...(theme.icons || DEFAULT_THEME.icons!), [key]: e.target.value } };
+                  setTheme(nextTheme);
+                  applyThemeToDOM(nextTheme);
+                }}
+                className="w-full px-4 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text-primary)] min-h-[44px]"
+              >
+                {PORTFOLIO_ICON_OPTIONS.map((iconName) => <option key={iconName} value={iconName}>{iconName}</option>)}
+              </select>
+            </div>
+          ))}
+          <div className="space-y-1.5">
+            <label htmlFor="admin-icon-size" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Tamanho dos ícones ({theme.icons?.size || 16}px)</label>
+            <input id="admin-icon-size" type="range" min="12" max="32" value={theme.icons?.size || 16} onChange={(e) => { const nextTheme = { ...theme, icons: { ...(theme.icons || DEFAULT_THEME.icons!), size: Number(e.target.value) } }; setTheme(nextTheme); applyThemeToDOM(nextTheme); }} className="w-full h-2 rounded bg-[var(--color-bg)] accent-[var(--color-primary)] cursor-pointer" />
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="admin-icon-stroke" className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)]">Espessura do traço ({theme.icons?.strokeWidth || 2})</label>
+            <input id="admin-icon-stroke" type="range" min="1" max="4" step="0.5" value={theme.icons?.strokeWidth || 2} onChange={(e) => { const nextTheme = { ...theme, icons: { ...(theme.icons || DEFAULT_THEME.icons!), strokeWidth: Number(e.target.value) } }; setTheme(nextTheme); applyThemeToDOM(nextTheme); }} className="w-full h-2 rounded bg-[var(--color-bg)] accent-[var(--color-primary)] cursor-pointer" />
+          </div>
+        </div>
+      </section>
+
+      {/* 6. UX WRITING & TOM DE VOZ */}
+
       <section className="p-6 sm:p-8 rounded-[var(--radius-main)] bg-[var(--color-surface)] border border-[var(--color-border)] space-y-6">
         <h3 className="text-base font-bold font-title text-[var(--color-text-primary)] flex items-center gap-2">
           <MessageSquare className="w-5 h-5 text-[var(--color-primary)]" />
-          <span>5. Tom de Voz & UX Writing Configurável</span>
+          <span>6. Tom de Voz & UX Writing Configurável</span>
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
